@@ -58,8 +58,14 @@ export default class Register extends Component{
             email: "",
             password: "",
             successful: false,
-            message: ""
+            message: "",
+            responseCode: 0
         };
+
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
     }
 
     onChangeUsername(e){
@@ -85,6 +91,7 @@ export default class Register extends Component{
 
         this.setState({
             message: "",
+            responseCode: 0,
             successful: false
         });
 
@@ -99,7 +106,7 @@ export default class Register extends Component{
                 response => {
                     this.setState({
                         message: response.data.message,
-                        sucessful: true
+                        responseCode: response.data.responseCode
                     });
                 },
                 error => {
@@ -112,7 +119,8 @@ export default class Register extends Component{
 
                     this.setState({
                         successful: false,
-                        message: resMessage
+                        message: resMessage,
+                        responseCode: 0
                     });
                 }
             );
@@ -140,6 +148,7 @@ export default class Register extends Component{
                                 <div className = 'form-group'>
                                     <label htmlFor='username'>Username</label>
                                     <Input 
+                                        
                                         type='text'
                                         className='form-control'
                                         name='username'
@@ -182,7 +191,7 @@ export default class Register extends Component{
                         {this.state.message && (
                             <div className = 'form-group'>
                                 <div className = {
-                                    this.state.successful
+                                    this.state.responseCode===1
                                     ? "alert alert-success"
                                     : "alert alert-danger"
                                 }
